@@ -6,7 +6,6 @@ import {
   Button,
   IconButton,
   Stack,
-  useMediaQuery,
   Drawer,
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
@@ -49,32 +48,31 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }))
 
 const variants = {
-	initial: {
-	  opacity: 0,
-	  y: 8,
-	},
-	enter: {
-	  opacity: 1,
-	  y: 0,
-	  transition: {
-		duration: 0.15,
-		ease: [0.61, 1, 0.88, 1],
-	  },
-	},
-	exit: {
-	  opacity: 0,
-	  y: 8,
-	  transition: {
-		duration: 0.15,
-		ease: [0.61, 1, 0.88, 1],
-	  },
-	},
-  }
+  initial: {
+    opacity: 0,
+    y: 8,
+  },
+  enter: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.15,
+      ease: [0.61, 1, 0.88, 1],
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: 8,
+    transition: {
+      duration: 0.15,
+      ease: [0.61, 1, 0.88, 1],
+    },
+  },
+}
 
 const GeneralLayout = () => {
   const { mode, setMode } = useContext(AppContext)
   const theme = useTheme()
-  const matchesDown = useMediaQuery(theme.breakpoints.down("xl"))
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {}, [])
@@ -98,15 +96,13 @@ const GeneralLayout = () => {
           }}
           variant="persistent"
           anchor="left"
-          open={isOpen || !matchesDown}
+          open={isOpen}
         >
-          {matchesDown && (
-            <DrawerHeader>
-              <IconButton onClick={() => setIsOpen(!isOpen)} c>
-                <CloseIcon sx={{ fontSize: 40 }} />
-              </IconButton>
-            </DrawerHeader>
-          )}
+          <DrawerHeader>
+            <IconButton onClick={() => setIsOpen(!isOpen)} c>
+              <CloseIcon sx={{ fontSize: 40 }} />
+            </IconButton>
+          </DrawerHeader>
           <Stack
             alignItems="center"
             direction="column"
@@ -114,7 +110,7 @@ const GeneralLayout = () => {
             sx={{
               width: "100%",
               backgroundColor: theme.palette.background.paper,
-              pt: !matchesDown ? 3 : 0,
+              pt: 3,
               textAlign: "center",
             }}
           >
@@ -177,22 +173,10 @@ const GeneralLayout = () => {
                       alignItems="center"
                       spacing={2}
                     >
-                      {matchesDown ? (
-                        <>
-                          <IconButton
-                            onClick={() =>
-                              !matchesDown ? {} : setIsOpen(!isOpen)
-                            }
-                          >
-                            <MenuIcon sx={{ fontSize: 40 }} />
-                          </IconButton>
-                          <Logo size="h5" />
-                        </>
-                      ) : (
-                        <Box sx={{ p: 2 }}>
-                          <Logo size="h5" />
-                        </Box>
-                      )}
+                      <IconButton onClick={() => setIsOpen(!isOpen)}>
+                        <MenuIcon sx={{ fontSize: 40 }} />
+                      </IconButton>
+                      <Logo size="h5" />
                       <Stack direction="row" alignItems="center" spacing={2}>
                         <RouterLink
                           to="auth/sigin"
