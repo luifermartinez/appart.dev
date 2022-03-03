@@ -12,7 +12,21 @@ import { AppContext } from "@/context/AppContext"
 import Page from "@/components/utils/Page"
 import { Link as RouterLink } from "react-router-dom"
 import Copyright from "@/components/common/Copyright"
+import { GoogleLogin } from "react-google-login"
+import GoogleIcon from "@mui/icons-material/Google"
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import FacebookIcon from '@mui/icons-material/Facebook';
 
+const clientId =
+  "749692310356-oatj2q6m8a67t5eg6ovutckrq3nif6cl.apps.googleusercontent.com"
+
+const responseGoogle = (response) => {
+  console.log(response)
+}
+
+const responseFacebook = (response) => {
+	console.log(response);
+  }
 const SignIn = () => {
   const { mode, setMode } = useContext(AppContext)
 
@@ -66,6 +80,39 @@ const SignIn = () => {
                 <Button type="submit" fullWidth variant="contained">
                   Inicia sesión
                 </Button>
+                <GoogleLogin
+                  clientId={clientId}
+                  render={(renderProps) => (
+                    <Button
+                      variant="outlined"
+                      color="inherit"
+                      startIcon={<GoogleIcon />}
+                      onClick={renderProps.onClick}
+                      disabled={renderProps.disabled}
+                    >
+                      Iniciar con Google
+                    </Button>
+                  )}
+                  onSuccess={responseGoogle}
+                  onFailure={responseGoogle}
+                  cookiePolicy={"single_host_origin"}
+                />
+                <FacebookLogin
+                  appId="478931630358796"
+                  autoLoad
+                  callback={responseFacebook}
+				  render={(renderProps) => (
+                    <Button
+                      variant="outlined"
+                      color="inherit"
+                      startIcon={<FacebookIcon />}
+                      onClick={renderProps.onClick}
+                      disabled={renderProps.disabled}
+                    >
+                      Iniciar con Facebook
+                    </Button>
+                  )}
+                />
               </Stack>
               <Grid container>
                 <Grid item>
@@ -74,7 +121,11 @@ const SignIn = () => {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link variant="body2" component={RouterLink} to="/auth/signup">
+                  <Link
+                    variant="body2"
+                    component={RouterLink}
+                    to="/auth/signup"
+                  >
                     ¿No tienes una cuenta? Registrate
                   </Link>
                 </Grid>

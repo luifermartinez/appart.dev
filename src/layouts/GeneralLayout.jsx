@@ -15,9 +15,11 @@ import { useContext, useEffect, useState } from "react"
 import { AppContext } from "@/context/AppContext"
 import WbSunnyIcon from "@mui/icons-material/WbSunny"
 import ModeNightIcon from "@mui/icons-material/ModeNight"
+import LoginIcon from "@mui/icons-material/Login"
 import CloseIcon from "@mui/icons-material/Close"
 import Copyright from "@/components/common/Copyright"
 import { motion } from "framer-motion"
+import AccountBar from "@/components/common/AccountBar"
 
 const drawerWidth = 300
 
@@ -141,7 +143,12 @@ const GeneralLayout = () => {
                 <Logo size="h3" />
               </Box>
               <RouterLink to="auth/sigin" style={{ textDecoration: "none" }}>
-                <Button variant="contained" fullWidth color="primary">
+                <Button
+                  variant="contained"
+                  fullWidth
+                  color="primary"
+                  startIcon={<LoginIcon />}
+                >
                   Iniciar sesión
                 </Button>
               </RouterLink>
@@ -182,10 +189,16 @@ const GeneralLayout = () => {
                           to="auth/sigin"
                           style={{ textDecoration: "none" }}
                         >
-                          <Button variant="contained" color="primary">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{ textTransform: "none" }}
+                            startIcon={<LoginIcon />}
+                          >
                             Iniciar sesión
                           </Button>
                         </RouterLink>
+                        <AccountBar />
                       </Stack>
                     </Stack>
                   </Box>
