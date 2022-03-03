@@ -1,4 +1,4 @@
-import { Box, Container, Card, Stack, IconButton } from "@mui/material"
+import { Box, Container, Card, Stack, IconButton, Avatar } from "@mui/material"
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
 import Link from "@mui/material/Link"
@@ -7,28 +7,37 @@ import Typography from "@mui/material/Typography"
 import Logo from "@/components/common/Logo"
 import WbSunnyIcon from "@mui/icons-material/WbSunny"
 import ModeNightIcon from "@mui/icons-material/ModeNight"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { AppContext } from "@/context/AppContext"
 import Page from "@/components/utils/Page"
 import { Link as RouterLink } from "react-router-dom"
 import Copyright from "@/components/common/Copyright"
 import { GoogleLogin } from "react-google-login"
-import GoogleIcon from "@mui/icons-material/Google"
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-import FacebookIcon from '@mui/icons-material/Facebook';
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props"
+import FacebookIcon from "@mui/icons-material/Facebook"
+import LoginIcon from "@mui/icons-material/Login"
+import googleLogo from "@/assets/img/google.svg"
 
 const clientId =
   "749692310356-oatj2q6m8a67t5eg6ovutckrq3nif6cl.apps.googleusercontent.com"
 
-const responseGoogle = (response) => {
-  console.log(response)
-}
-
-const responseFacebook = (response) => {
-	console.log(response);
-  }
 const SignIn = () => {
   const { mode, setMode } = useContext(AppContext)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const responseGoogle = (response) => {
+    if (response.googleId) {
+      setEmail(response.profileObj.email)
+    } else {
+      setEmail("")
+      setPassword("")
+    }
+  }
+
+  const responseFacebook = (response) => {
+    console.log(response)
+  }
 
   return (
     <Page title="appart.dev | Iniciar sesión">
@@ -66,29 +75,49 @@ const SignIn = () => {
                 <TextField
                   required
                   fullWidth
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   label="Correo electrónico"
                   autoComplete="email"
                   autoFocus
                 />
                 <TextField
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   fullWidth
                   label="Contraseña"
                   type="password"
                   autoComplete="current-password"
                 />
-                <Button type="submit" fullWidth variant="contained">
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  startIcon={<LoginIcon />}
+                >
                   Inicia sesión
                 </Button>
                 <GoogleLogin
                   clientId={clientId}
                   render={(renderProps) => (
                     <Button
-                      variant="outlined"
                       color="inherit"
-                      startIcon={<GoogleIcon />}
+                      startIcon={
+                        <Avatar
+                          src={googleLogo}
+                          sx={{ width: 16, height: 16 }}
+                        />
+                      }
                       onClick={renderProps.onClick}
                       disabled={renderProps.disabled}
+                      sx={{
+                        backgroundColor: "#fafafa",
+                        color: "#000",
+                        "&:hover": {
+                          backgroundColor: "#e9e9e9",
+                        },
+                      }}
                     >
                       Iniciar con Google
                     </Button>
@@ -101,13 +130,19 @@ const SignIn = () => {
                   appId="478931630358796"
                   autoLoad
                   callback={responseFacebook}
-				  render={(renderProps) => (
+                  render={(renderProps) => (
                     <Button
-                      variant="outlined"
-                      color="inherit"
+                      variant="contained"
                       startIcon={<FacebookIcon />}
                       onClick={renderProps.onClick}
                       disabled={renderProps.disabled}
+                      sx={{
+                        backgroundColor: "#3b5998",
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: "#526ca1",
+                        },
+                      }}
                     >
                       Iniciar con Facebook
                     </Button>
@@ -116,7 +151,7 @@ const SignIn = () => {
               </Stack>
               <Grid container>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="#" variant="body2" color="text.secondary">
                     ¿Olvidaste tu contraseña?
                   </Link>
                 </Grid>
@@ -125,6 +160,7 @@ const SignIn = () => {
                     variant="body2"
                     component={RouterLink}
                     to="/auth/signup"
+                    color="text.secondary"
                   >
                     ¿No tienes una cuenta? Registrate
                   </Link>
